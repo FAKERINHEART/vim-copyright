@@ -4,14 +4,14 @@
 "   Author        : bbxytl
 "   Email         : bbxytl@gmail.com
 "   File Name     : copyright.vim
-"   Last Modified : 2021-02-09 10:41
+"   Last Modified : 2021-07-22 16:40
 "   Describe      : Released under the MIT licence.
 "       Add and update Copyright messag, eg. file name, last modified
 "
 " ====================================================
 
 
-if exists('g:loaded_file_copyright') || &cp
+if exists('g:loaded_file_copyright') && g:loaded_file_copyright == 0 || &cp
   finish
 endif
 let g:loaded_file_copyright = 1
@@ -67,8 +67,8 @@ endif
 
 let g:file_copyright_comment_mid_prefix_map_default = {
       \"python": "\#", "py":"\#",
-      \"cpp":"\#", "c":"\#", "h":"\#", "hpp":"\#",
-      \"go":"\#",
+      \"cpp":"\/\/", "c":"\/\/", "h":"\/\/", "hpp":"\#", "hxx":"\#", "cxx":"\#", "hh":"\#", "cc":"\#",
+      \"go":"\/\/",
       \"vim":"\"",
       \"sh":"\#", "shell":"\#",
       \"ruby":"\#", "rb":"\#", "rake":"\#",
@@ -101,7 +101,7 @@ function! MatchFileType()
 
     return 0
 endfunction
-autocmd BufNewFile * if MatchFileType() | exec ":call <SID>AddTitle()" | endif
+" autocmd BufNewFile * if MatchFileType() | exec ":call <SID>AddTitle()" | endif
 
 
 function SetCommentFlag()
@@ -159,17 +159,9 @@ function! <SID>SetComment(begin)
         let l = 2
       endif
     endif
-    call append(l + 1,      g:file_copyright_comment_prefix." ====================================================")
-    call append(l + 2,  g:file_copyright_comment_mid_prefix."   Copyright (C) ".strftime("%Y")." ".expand(g:file_copyright_company)." ".expand(g:file_copyright_rights))
-    call append(l + 3,  g:file_copyright_comment_mid_prefix)
-    call append(l + 4,  g:file_copyright_comment_mid_prefix."   Author        : ".expand(g:file_copyright_name))
-    call append(l + 5,  g:file_copyright_comment_mid_prefix."   Email         : ".expand(g:file_copyright_email))
-    call append(l + 6,  g:file_copyright_comment_mid_prefix."   File Name     : ".expand("%:t"))
-    call append(l + 7,  g:file_copyright_comment_mid_prefix."   Last Modified : ".strftime("%Y-%m-%d %H:%M"))
-    call append(l + 8,  g:file_copyright_comment_mid_prefix."   Describe      : " )
-    call append(l + 9,  g:file_copyright_comment_mid_prefix)
-    call append(l + 10, g:file_copyright_comment_mid_prefix." ====================================================".g:file_copyright_comment_end)
-    call append(l + 11, "")
+    call append(l + 1,  g:file_copyright_comment_mid_prefix."   Copyright (c) ".strftime("%Y")." ".expand(g:file_copyright_rights).".")
+    call append(l + 2,  g:file_copyright_comment_mid_prefix."   Author: ".expand(g:file_copyright_name))
+    call append(l + 3,  g:file_copyright_comment_mid_prefix."   Created on ".strftime("%Y/%m/%d").".")
 endfunction
 let s:file_copyright_head_end_line_no = 9
 
